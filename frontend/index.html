@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Cognito Authentication</title>
+</head>
+<body>
+<h1>Sign Up</h1>
+<form id="signup-form">
+    <input type="hidden" name="action" value="signup">
+    <input type="email" name="email" placeholder="Email" id="email" required>
+    <input type="password" placeholder="Password" name="password" id="password" required>
+    <input type="text" placeholder="Phone Number" name="phone_number" id="phone-number" required>
+    <button type="submit">Sign Up</button>
+</form>
+
+<h1>Confirm Email</h1>
+<form id="confirm-form">
+    <input type="hidden" name="action" value="confirm">
+    <input type="email" name="email" placeholder="Email" id="confirm-email" required>
+    <input type="text" placeholder="Confirmation Code" name="confirmation_code" id="confirmation-code" required>
+    <button type="submit">Confirm Email</button>
+</form>
+
+<h1>Sign In</h1>
+<form id="signin-form">
+    <input type="hidden" name="action" value="signin">
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <button type="submit">Sign In</button>
+</form>
+
+<h1>Update Phone Number</h1>
+<form id="verify-phone-form">
+    <input type="hidden" name="action" value="verify/phone">
+    <input type="email" name="email" placeholder="Email" id="verify-email" required>
+    <input type="text" placeholder="Phone Number" name="phone_number" id="verify-phone-number" required>
+    <input type="text" placeholder="Access token from Sign in" name="access_token" id="access-token" required>
+    <button type="submit">Update Phone Number</button>
+</form>
+
+<h1>Confirm SMS Code</h1>
+<form id="confirm-sms-form">
+    <input type="hidden" name="action" value="confirm/sms">
+    <input type="email" name="email" placeholder="Email" id="sms-email" required>
+    <input type="text" placeholder="SMS Code" name="sms_code" id="sms-code" required>
+    <button type="submit">Confirm SMS Code</button>
+</form>
+
+<h1>Reset Password</h1>
+<form id="reset-password-form">
+    <input type="hidden" name="action" value="reset/request">
+    <input type="email" name="email" placeholder="Email" id="reset-email" required>
+    <button type="submit">Request Password Reset</button>
+</form>
+
+<h1>Confirm Password Reset</h1>
+<form id="confirm-reset-form">
+    <input type="hidden" name="action" value="reset/confirm">
+    <input type="email" placeholder="Email" name="email" id="confirm-reset-email" required>
+    <input type="text" placeholder="Confirmation Code" name="confirmation_code" id="confirm-reset-code" required>
+    <input type="password" placeholder="New Password" name="new_password" id="new-password" required>
+    <button type="submit">Confirm Password Reset</button>
+</form>
+
+<script>
+    const apiBaseUrl = 'http://127.0.0.1:8000'; // Change this to your Django backend URL
+
+    // Helper function to make API requests
+    async function makeRequest(url, method, data) {
+        const response = await fetch(url, {
+            method,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+        });
+        return response.json();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const dynamicForms = document.querySelectorAll('form');
+
+        dynamicForms.forEach((form) => {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+
+                const response = await fetch(`${apiBaseUrl}/`+formData.get('action')+'/', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                alert(result.message ?? result.error );
+            });
+        });
+    });
+
+    // Implement similar event listeners for other forms (verify phone, confirm SMS, reset password, confirm reset)
+</script>
+</body>
+</html>
