@@ -137,7 +137,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # AWS Cognito configuration
-AWS_REGION = 'ap-northeast-1'
-COGNITO_POOL_ID = 'ap-northeast-1_zngmcFVP8'
-COGNITO_CLIENT_ID = '3ljvapssgr06kaadr4l0l8vgd7'
-COGNITO_CLIENT_SECRET = '1dnrbo00ep5h3u7jife9rmmahquisf52rnpvd64120ipbf3ar76q'
+AWS_REGION = 'your_aws_region'
+COGNITO_POOL_ID = 'your_cognito_pool_id'
+COGNITO_CLIENT_ID = 'your_cognito_client_id'
+COGNITO_CLIENT_SECRET = 'your_cognito_client_secret'
